@@ -1,7 +1,17 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 # define ERROR					-1
-# define SUCCESS				1
+# define PI						3.1415926536
+# define X_EVENT_KEY_PRESS		2
+# define X_EVENT_KEY_release	3
+# define X_EVENT_KEY_EXIT		17
+# define KEY_ESC				53
+# define KEY_W					12
+# define KEY_A					0
+# define KEY_S					1
+# define KEY_D					2
+# define KEY_LEFT				123
+# define KEY_RIGHT				124
 # include <stdio.h>
 # include <math.h>
 # include <fcntl.h>
@@ -9,10 +19,41 @@
 # include "./get_next_line/get_next_line.h"
 # include "./mlx_dylib/mlx.h"
 
+typedef struct			s_img
+{
+	void				*img;
+	int					endian;
+	int					bpp;
+	int					size_l;
+}						t_img;
+
+typedef struct			s_player
+{
+	double				x;
+	double				y;
+	double				radius;
+	double				turn_dir;
+	double				walk_dir;
+	double				rot_angle;
+	double				move_speed;
+	double				rotation_speed;
+}						t_player;
+
+typedef struct			s_key
+{
+	int					w_key;
+	int					s_key;
+	int					a_key;
+	int					d_key;
+	int					left_key;
+	int					right_key;
+}						t_key;
+
 typedef struct			s_game
 {
 	void				*mlx;
 	void				*win;
+	t_img				*img;
 	char				**map;
 }						t_game;
 
@@ -38,21 +79,26 @@ typedef struct			s_map_data
 
 t_game					game;
 t_map_data				md;
+t_player				player;
+t_key					g_keys;
 int						g_idx_width;
 int						g_idx_height;
+int						g_tile_size;
 //parse_cub.c
 int						parse_cub(int fd);
 //parse_utils.c
 int						set_base_data(char **splits);
 int						count_splits(char **splits);
+int						make_color(char *splits, t_color **color);
+void					free_arrs(char **splits);
 //save.c
 int						save_r(char **splits);
 int						save_texture(char **splits);
 int						save_color(char **splits);
-//utils1.c
-int						make_color(char *splits, t_color **color);
-//free.c
-void					free_arrs(char **splits);
+//player_util.c
+void					update(void);
+//map_valid_test.c
+int						map_valid_test(char **map, int i, int j);
 //parse_map.c
 void					parse_map(int fd, t_list **map_list);
 char					**fill_map_data(t_list *map_list);
@@ -61,4 +107,11 @@ int						get_map_height(t_list *map_list);
 //map_utils.c
 void					copy_map_data(char **map, t_list *map_list);
 int						map_valid_check(char **map);
+//cub_setting.c
+int						cub_setting();
+//key_press.c
+int						key_release(int keycode);
+int						key_press(int keycode);
+//cub3d_start.c
+int						main_loop(void);
 #endif

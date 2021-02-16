@@ -23,5 +23,20 @@ void			copy_map_data(char **map, t_list *map_list)
 
 int				map_valid_check(char **map)
 {
-	
+	int			i;
+	int			j;
+
+	i = 0;
+	while (i < g_idx_height)
+	{
+		while (j < g_idx_width)
+		{
+			if (map[i][j] == '0' || map[i][j] == '2' || map[i][j] == 'N' ||
+			 map[i][j] == 'E' || map[i][j] == 'W' || map[i][j] == 'S')
+				if ((map_valid_test(map, i, j)) == -1)
+			 		return (ERROR);
+			j++;
+		}
+		i++;
+	}
 }

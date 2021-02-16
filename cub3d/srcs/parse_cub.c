@@ -91,5 +91,11 @@ int				parse_cub(int fd)
 		return (ERROR);
 	if ((game.map = fill_map_data(map_list)) == 0)
 		return (ERROR);
+	w_tile = md.width / g_idx_width;
+	h_tile = md.height / g_idx_height;
+	if (w_tile >= h_tile)
+		g_tile_size = h_tile;
+	else
+		g_tile_size = w_tile;
 	return (0);
 }

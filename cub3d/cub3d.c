@@ -16,6 +16,12 @@ int				main(int argc, char *argv[])
 		printf("cub parse error\n");
 		return (ERROR);
 	}
-	printf("width : %d\n height : %d\nnorth : %s\nsouth : %s\neast : %s\nwest : %s\nsprite : %s\nred : %d\ngreen : %d\nblue : %d", md.width, md.height, md.north, md.south, md.east, md.west, md.sprite, md.f->red, md.f->green, md.f->blue);
+	if (cub_setting() == ERROR)
+	{
+		printf("cub setting error\n");
+		return (ERROR);
+	}
+	mlx_loop_hook(game.mlx, &main_loop, 0);
+	mlx_loop(game.mlx);
 	return (0);
 }
